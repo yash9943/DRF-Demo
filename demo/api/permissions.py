@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 
 class IsSuperUser(BasePermission):
     def has_permission(self, request, view):
-        superuser = request.user == User.objects.filter(is_superuser=True)
+        superuser = User.objects.filter(id=request.user.id, is_superuser=True)
         return superuser
     
 class IsMemberOrOwner(BasePermission):

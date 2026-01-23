@@ -15,6 +15,11 @@ class ProjectSerializer(serializers.ModelSerializer):
         fields = ['id', 'name', 'description', 'created_at', 'owner', 'members']
         
 class TaskSerializer(serializers.ModelSerializer):
+    due_within_24_hours = serializers.SerializerMethodField()
+    
     class Meta:
         model = Task
-        fields = ['id', 'project', 'title', 'details', 'due_date', 'completed', 'created_at']
+        fields = ['id', 'project', 'title', 'details', 'due_date', 'completed', 'created_at','due_within_24_hours']
+        
+    def get_due_within_24_hours(self, obj):
+        return obj.is_due_within_24_hours()

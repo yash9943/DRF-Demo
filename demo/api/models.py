@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils import timezone
+from datetime import timedelta
 
 class Project(models.Model):
     name = models.CharField(max_length=100)
@@ -22,3 +24,12 @@ class Task(models.Model):
     
     def __str__(self):
         return self.title
+    
+    def is_due_within_24_hours(self):
+        if not self.due_date:
+            return False
+
+        today = timezone.now().date()
+        tomorrow = today + timedelta(days=1)
+
+        return today <= self.due_date <= tomorrow
